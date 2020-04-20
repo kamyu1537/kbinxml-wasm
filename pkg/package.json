@@ -1,0 +1,15 @@
+{
+  "name": "kbinxml-wasm",
+  "collaborators": [
+    "Byeon Seongun <kamyu1537@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "kbinxml_wasm_bg.wasm",
+    "kbinxml_wasm.js",
+    "kbinxml_wasm_bg.js",
+    "kbinxml_wasm.d.ts"
+  ],
+  "main": "kbinxml_wasm.js",
+  "types": "kbinxml_wasm.d.ts"
+}
