@@ -1,5 +1,6 @@
 {
   "name": "kbinxml-wasm",
   "version": "1.0.0",
-  "repository": "https://github.com/kamyu1537/kbinxml-wasm.git"
+  "repository": "https://github.com/kamyu1537/kbinxml-wasm.git",
+  "main": "pkg/kbinxml_wasm.js"
 }
