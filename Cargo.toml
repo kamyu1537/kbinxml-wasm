@@ -1,8 +1,11 @@
 [package]
 name = "kbinxml-wasm"
+description = "konmai binary xml"
 version = "0.1.0"
 authors = ["Byeon Seongun <kamyu1537@gmail.com>"]
 edition = "2018"
+license = "MIT"
+repository = "https://github.com/kamyu1537/kbinxml-wasm.git"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,6 +13,6 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "0.2.59"
-base64 = "0.12.0"
+wasm-bindgen = "0.2.79"
+base64 = "0.13.0"
 kbinxml = { git = "https://github.com/mbilker/kbinxml-rs" }

@@ -1,6 +1,12 @@
 {
   "name": "kbinxml-wasm",
+  "description": "konmai binary xml",
   "version": "1.0.0",
   "repository": "https://github.com/kamyu1537/kbinxml-wasm.git",
-  "main": "pkg/kbinxml_wasm.js"
+  "main": "dist/kbinxml_wasm.js",
+  "license": "MIT",
+  "author": "Byeon Seongun <kamyu1537@gmail.com> (https://kamyu.me)",
+  "scripts": {
+    "build": "wasm-pack build --target nodejs -d dist"
+  }
 }
