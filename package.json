@@ -1,5 +1,5 @@
 {
-  "name": "kbinxml-wasm",
+  "name": "@kamyu/kbinxml",
   "description": "konmai binary xml",
   "version": "1.0.0",
   "repository": "https://github.com/kamyu1537/kbinxml-wasm.git",
