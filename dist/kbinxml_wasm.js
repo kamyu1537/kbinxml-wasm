@@ -1,6 +1,6 @@
 let imports = {};
 let wasm;
-const { TextDecoder } = require(String.raw`util`);
+const { TextDecoder } = require(`util`);
 
 let cachegetUint8Memory0 = null;
 function getUint8Memory0() {
@@ -40,13 +40,15 @@ function getStringFromWasm0(ptr, len) {
 */
 module.exports.encode = function(data) {
     try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.encode(8, ptr0, len0);
-        var r0 = getInt32Memory0()[8 / 4 + 0];
-        var r1 = getInt32Memory0()[8 / 4 + 1];
+        wasm.encode(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 };
@@ -57,13 +59,15 @@ module.exports.encode = function(data) {
 */
 module.exports.decode = function(data) {
     try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.decode(8, ptr0, len0);
-        var r0 = getInt32Memory0()[8 / 4 + 0];
-        var r1 = getInt32Memory0()[8 / 4 + 1];
+        wasm.decode(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 };

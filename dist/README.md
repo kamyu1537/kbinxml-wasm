@@ -6,9 +6,11 @@ kbinxml-rs 를 node js 에서 쓸수 있도록 WebAssembly 로 빌드합니다.
 
 ## build
 > rust 와 wasm-pack 이 필요합니다!<br/>
+> https://www.rust-lang.org/
+> https://rustwasm.github.io/wasm-pack/
 > **만약 visual studio 가 없을경우 설치하셔야합니다!!!**
 ```shell script
-wasm-pack build --target nodejs
+npm run build
 ```
 
 ## how to use?
