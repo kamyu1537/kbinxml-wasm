@@ -1,7 +1,7 @@
 {
   "name": "@kamyu/kbinxml",
   "description": "konmai binary xml",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "https://github.com/kamyu1537/kbinxml-wasm.git",
   "main": "dist/kbinxml_wasm.js",
   "license": "MIT",
