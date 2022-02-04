@@ -1,20 +1,20 @@
 # kbinxml-wasm
 kbinxml-rs 를 node js 에서 쓸수 있도록 WebAssembly 로 빌드합니다.
 
-> kbinxml-rs 의 cli 코드를 보고 작성하였습니다.<br/>
+> kbinxml-rs 의 cli 코드를 보고 작성하였습니다.  
 > 불필요한 코드가 들어갔을수도 있습니다.
 
 ## build
-> rust 와 wasm-pack 이 필요합니다!<br/>
-> https://www.rust-lang.org/
-> https://rustwasm.github.io/wasm-pack/
-> **만약 visual studio 가 없을경우 설치하셔야합니다!!!**
+> **rust** 와 **wasm-pack** 이 필요합니다!  
+> **rust**: https://www.rust-lang.org/  
+> **wasm-pack**: https://rustwasm.github.io/wasm-pack/  
+> **만약 Visual Studio 가 없을경우 설치하셔야합니다!!!**
 ```shell script
 npm run build
 ```
 
 ## how to use?
-> 값이 `base64` 로 넘어옵니다.<br/>
+> 값이 `base64` 로 넘어옵니다.  
 > **해당부분은 따로 처리해주세요.**
 
 ``` javascript
