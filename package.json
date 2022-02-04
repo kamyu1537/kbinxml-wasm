@@ -7,6 +7,10 @@
   "license": "MIT",
   "author": "Byeon Seongun <kamyu1537@gmail.com> (https://kamyu.me)",
   "scripts": {
-    "build": "wasm-pack build --target nodejs -d dist"
+    "build": "wasm-pack build --target nodejs -d dist",
+    "postbuild": "node bin/postbuild.js"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.14"
   }
 }
