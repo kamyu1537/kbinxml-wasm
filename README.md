@@ -27,3 +27,11 @@ const kbinxml = require('@kamyu/kbinxml');
 kbinxml.encode(fs.readFileSync('xml.xml'));
 kbinxml.decode(fs.readFileSync('xml.scripts'));
 ```
+### Typescript
+```typescript
+import * as fs from 'fs';
+import * as kbinxml from '@kamyu/kbinxml';
+
+kbinxml.encode(fs.readFileSync('xml.xml'));
+kbinxml.decode(fs.readFileSync('xml.scripts'));
+```
