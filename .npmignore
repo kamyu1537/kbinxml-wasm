@@ -1,7 +1,7 @@
 /target
 /src
 /.idea
-/bin
+/scripts
 
 Cargo.lock
 Cargo.toml
