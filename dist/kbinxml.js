@@ -72,7 +72,7 @@ module.exports.decode = function(data) {
     }
 };
 
-const path = require('path').join(__dirname, 'kbinxml_wasm_bg.wasm');
+const path = require('path').join(__dirname, 'kbinxml_bg.wasm');
 const bytes = require('fs').readFileSync(path);
 
 const wasmModule = new WebAssembly.Module(bytes);
