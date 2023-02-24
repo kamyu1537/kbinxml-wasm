@@ -186,32 +186,35 @@ function passArray8ToWasm0(arg, malloc) {
 }
 /**
 * @param {Uint8Array} data
-* @param {number} encoding_byte
-* @returns {string}
+* @returns {{ xml: string, encoding: number }}
 */
-module.exports.encode = function(data, encoding_byte) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
-        const len0 = WASM_VECTOR_LEN;
-        wasm.encode(retptr, ptr0, len0, encoding_byte);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(r0, r1);
-    }
+module.exports.to_bin = function(data) {
+    const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ret = wasm.to_bin(ptr0, len0);
+    return takeObject(ret);
+};
+
+/**
+* @param {Uint8Array} data
+* @param {number} encoding_byte
+* @returns {{ xml: string, encoding: number }}
+*/
+module.exports.to_bin_with_encoding = function(data, encoding_byte) {
+    const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ret = wasm.to_bin_with_encoding(ptr0, len0, encoding_byte);
+    return takeObject(ret);
 };
 
 /**
 * @param {Uint8Array} data
 * @returns {{ xml: string, encoding: number }}
 */
-module.exports.decode = function(data) {
+module.exports.to_xml = function(data) {
     const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.decode(ptr0, len0);
+    const ret = wasm.to_xml(ptr0, len0);
     return takeObject(ret);
 };
 
