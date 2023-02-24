@@ -1,16 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* @param {Uint8Array} data
+* @param {string} xml
 * @returns {ResultType}
 */
-export function to_bin(data: Uint8Array): ResultType;
+export function to_bin(xml: string): ResultType;
 /**
-* @param {Uint8Array} data
+* @param {string} xml
 * @param {ToBinOptionType} opts
 * @returns {ResultType}
 */
-export function to_bin_with_options(data: Uint8Array, opts: ToBinOptionType): ResultType;
+export function to_bin_with_options(xml: string, opts: ToBinOptionType): ResultType;
 /**
 * @param {Uint8Array} data
 * @returns {ResultType}
