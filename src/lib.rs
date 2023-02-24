@@ -1,13 +1,19 @@
 mod utils;
 
-use gloo_utils::format::JsValueSerdeExt;
 use kbinxml::{EncodingType, Options};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(typescript_type = "{ xml: string, encoding: number }")]
+    pub type IDecodeResult;
+}
 
 #[derive(Serialize, Deserialize)]
 pub struct DecodeResult {
@@ -27,14 +33,24 @@ pub fn encode(data: &[u8], encoding_byte: u8) -> String {
 
 // Binary -> XML
 #[wasm_bindgen]
-pub fn decode(data: &[u8]) -> JsValue {
+pub fn decode(data: &[u8]) -> IDecodeResult {
     let (collection, encoding) = kbinxml::from_slice(data).unwrap();
-    let xml = kbinxml::to_text_xml(&collection).unwrap();
+    let xml_vec = kbinxml::to_text_xml(&collection).unwrap();
+    let xml_str = String::from_utf8(xml_vec).unwrap();
+
+    // xml_str split \n and trim all lines and join
+    let xml = xml_str
+        .split('\n')
+        .map(|line| line.trim())
+        .collect::<Vec<&str>>()
+        .join("");
 
     let result = DecodeResult {
-        xml: String::from_utf8(xml).unwrap(),
+        xml,
         encoding: encoding.to_byte(),
     };
 
-    JsValue::from_serde(&result).unwrap()
+    serde_wasm_bindgen::to_value(&result)
+        .unwrap()
+        .unchecked_into::<IDecodeResult>()
 }

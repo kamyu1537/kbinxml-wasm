@@ -23,7 +23,6 @@ wee_alloc = { version = "0.4.5", optional = true }
 kbinxml = { git = "https://github.com/mbilker/kbinxml-rs" }
 serde = { version = "1.0.152", features = ["derive"] }
 serde-wasm-bindgen = "0.4.5"
-gloo-utils = { version = "0.1.6", features = ["serde"] }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.29"
