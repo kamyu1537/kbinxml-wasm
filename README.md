@@ -1,37 +1,43 @@
 # kbinxml-wasm
+
 rust kbinxml built with wasm to be usable in nodejs.
 
 ## Installation
+
 ```shell
 npm i @kamyu/kbinxml
 ```
 
 ## Build
+
 ### Requirements
-* [wasm-pack](https://rustwasm.github.io/wasm-pack/)
-* [rust](https://www.rust-lang.org/)
+
+- [wasm-pack](https://rustwasm.github.io/wasm-pack/)
+- [rust](https://www.rust-lang.org/)
+
 ### Command
+
 ```shell
 npm run build
 ```
 
-## Example
-> **parameter**: Buffer or Uint8Array  
-> **return**: String(Base64)
+### Type
 
-### Javascript
-```javascript
-const fs = require('fs');
-const kbinxml = require('@kamyu/kbinxml');
-
-kbinxml.encode(fs.readFileSync('xml.xml'));
-kbinxml.decode(fs.readFileSync('xml.bin'));
-```
-### Typescript
 ```typescript
-import * as fs from 'fs';
-import * as kbinxml from '@kamyu/kbinxml';
+enum EncodingType {
+    None = 0x00,
+    ASCII = 0x20,
+    ISO_8859_1 = 0x40,
+    EUC_JP = 0x60,
+    SHIFT_JIS = 0x80,
+    UTF_8 = 0xA0,
+}
 
-kbinxml.encode(fs.readFileSync('xml.xml'));
-kbinxml.decode(fs.readFileSync('xml.bin'));
+type XmlResult = { data: string, encoding: EncodingType };
+type BinaryResult = { data: string, encoding: EncodingType };
+type BinaryOptions = { encoding?: EncodingType, compression?: boolean };
+
+to_bin(xml: string): BinaryResult;
+to_bin_with_options(xml: string, options: BinaryOptions): BinaryResult;
+to_xml(bin: Uint8Array): XmlResult;
 ```

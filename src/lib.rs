@@ -13,12 +13,17 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 // append type
 #[wasm_bindgen(typescript_custom_section)]
 const TS_APPEND_CONTENT: &'static str = r#"
-export type ResultType = {
+export type XmlResult = {
     data: string,
     encoding: EncodingType,
 };
 
-export type ToBinOptionType = {
+export type BinaryResult = {
+    data: Uint8Array,
+    encoding: EncodingType,
+};
+
+export type BinaryOptions = {
     compression?: boolean,
     encoding?: EncodingType,
 };
@@ -35,21 +40,30 @@ export enum EncodingType {
 
 #[wasm_bindgen]
 extern "C" {
-    #[wasm_bindgen(typescript_type = "ResultType")]
-    pub type ResultDataType;
+    #[wasm_bindgen(typescript_type = "XmlResult")]
+    pub type XmlResultType;
 
-    #[wasm_bindgen(typescript_type = "ToBinOptionType")]
-    pub type ToBinOptionType;
+    #[wasm_bindgen(typescript_type = "BinaryResult")]
+    pub type BinaryResultType;
+
+    #[wasm_bindgen(typescript_type = "BinaryOptions")]
+    pub type BinaryOptionsType;
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct ResultData {
+pub struct XmlResult {
     pub data: String,
     pub encoding: u8,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct BinaryResult {
+    pub data: Box<[u8]>,
+    pub encoding: u8,
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct ToBinOptions {
+pub struct BinaryOptions {
     pub compression: Option<bool>,
     pub encoding: Option<u8>,
 }
@@ -98,7 +112,7 @@ fn to_binary_with_options(
     }
 }
 
-fn to_value(data: &ResultData) -> Result<JsValue, KbinXMLError> {
+fn to_xml_result(data: &XmlResult) -> Result<JsValue, KbinXMLError> {
     if let Ok(result) = serde_wasm_bindgen::to_value(data) {
         Ok(result)
     } else {
@@ -106,7 +120,15 @@ fn to_value(data: &ResultData) -> Result<JsValue, KbinXMLError> {
     }
 }
 
-fn get_to_binary_options(opts: ToBinOptionType) -> Result<ToBinOptions, KbinXMLError> {
+fn to_binary_result(data: &BinaryResult) -> Result<JsValue, KbinXMLError> {
+    if let Ok(result) = serde_wasm_bindgen::to_value(data) {
+        Ok(result)
+    } else {
+        Err(KbinXMLError::ResultConversion)
+    }
+}
+
+fn get_to_binary_options(opts: BinaryOptionsType) -> Result<BinaryOptions, KbinXMLError> {
     if let Ok(options) = serde_wasm_bindgen::from_value(JsValue::from(opts)) {
         Ok(options)
     } else {
@@ -114,7 +136,7 @@ fn get_to_binary_options(opts: ToBinOptionType) -> Result<ToBinOptions, KbinXMLE
     }
 }
 
-fn build_to_binary_options(opts: ToBinOptions) -> Result<Options, KbinXMLError> {
+fn build_to_binary_options(opts: BinaryOptions) -> Result<Options, KbinXMLError> {
     let mut options = Options::builder();
 
     if let Some(compression) = opts.compression {
@@ -157,43 +179,46 @@ fn to_text_xml(collection: &kbinxml::NodeCollection) -> Result<String, KbinXMLEr
 
 // XML -> Binary
 #[wasm_bindgen]
-pub fn to_bin(xml: String) -> Result<ResultDataType, JsError> {
+pub fn to_bin(xml: String) -> Result<BinaryResultType, JsError> {
     let (collection, encoding) = from_text_xml(xml)?;
     let options = Options::with_encoding(encoding);
     let binary = to_binary_with_options(options, &collection)?;
 
-    let result = ResultData {
-        data: base64::encode(binary),
+    let result = BinaryResult {
+        data: binary.into_boxed_slice(),
         encoding: encoding.to_byte(),
     };
 
-    let result = to_value(&result)?;
-    Ok(result.unchecked_into::<ResultDataType>())
+    let result = to_binary_result(&result)?;
+    Ok(result.unchecked_into::<BinaryResultType>())
 }
 
 // XML -> Binary
 #[wasm_bindgen]
-pub fn to_bin_with_options(xml: String, opts: ToBinOptionType) -> Result<ResultDataType, JsError> {
+pub fn to_bin_with_options(
+    xml: String,
+    opts: BinaryOptionsType,
+) -> Result<BinaryResultType, JsError> {
     let opts = get_to_binary_options(opts)?;
     let options = build_to_binary_options(opts.clone())?;
     let (collection, _encoding) = from_text_xml(xml)?;
     let binary = to_binary_with_options(options, &collection)?;
 
-    let result = ResultData {
-        data: base64::encode(binary),
+    let result = BinaryResult {
+        data: binary.into_boxed_slice(),
         encoding: match opts.encoding {
             Some(encoding) => encoding,
             None => EncodingType::None.to_byte(),
         },
     };
 
-    let result = to_value(&result)?;
-    Ok(result.unchecked_into::<ResultDataType>())
+    let result = to_binary_result(&result)?;
+    Ok(result.unchecked_into::<BinaryResultType>())
 }
 
 // Binary -> XML
 #[wasm_bindgen]
-pub fn to_xml(data: &[u8]) -> Result<ResultDataType, JsError> {
+pub fn to_xml(data: &[u8]) -> Result<XmlResultType, JsError> {
     let (collection, encoding) = get_binary_from_slice(data)?;
     let xml_str = to_text_xml(&collection)?;
 
@@ -204,11 +229,11 @@ pub fn to_xml(data: &[u8]) -> Result<ResultDataType, JsError> {
         .collect::<Vec<&str>>()
         .join("");
 
-    let result = ResultData {
+    let result = XmlResult {
         data: str,
         encoding: encoding.to_byte(),
     };
 
-    let result = to_value(&result)?;
-    Ok(result.unchecked_into::<ResultDataType>())
+    let result = to_xml_result(&result)?;
+    Ok(result.unchecked_into::<XmlResultType>())
 }

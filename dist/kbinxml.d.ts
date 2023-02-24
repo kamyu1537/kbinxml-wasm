@@ -2,27 +2,32 @@
 /* eslint-disable */
 /**
 * @param {string} xml
-* @returns {ResultType}
+* @returns {BinaryResult}
 */
-export function to_bin(xml: string): ResultType;
+export function to_bin(xml: string): BinaryResult;
 /**
 * @param {string} xml
-* @param {ToBinOptionType} opts
-* @returns {ResultType}
+* @param {BinaryOptions} opts
+* @returns {BinaryResult}
 */
-export function to_bin_with_options(xml: string, opts: ToBinOptionType): ResultType;
+export function to_bin_with_options(xml: string, opts: BinaryOptions): BinaryResult;
 /**
 * @param {Uint8Array} data
-* @returns {ResultType}
+* @returns {XmlResult}
 */
-export function to_xml(data: Uint8Array): ResultType;
+export function to_xml(data: Uint8Array): XmlResult;
 
-export type ResultType = {
+export type XmlResult = {
     data: string,
     encoding: EncodingType,
 };
 
-export type ToBinOptionType = {
+export type BinaryResult = {
+    data: Uint8Array,
+    encoding: EncodingType,
+};
+
+export type BinaryOptions = {
     compression?: boolean,
     encoding?: EncodingType,
 };

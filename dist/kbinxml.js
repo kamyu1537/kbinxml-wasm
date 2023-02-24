@@ -192,7 +192,7 @@ function debugString(val) {
 }
 /**
 * @param {string} xml
-* @returns {ResultType}
+* @returns {BinaryResult}
 */
 module.exports.to_bin = function(xml) {
     try {
@@ -214,8 +214,8 @@ module.exports.to_bin = function(xml) {
 
 /**
 * @param {string} xml
-* @param {ToBinOptionType} opts
-* @returns {ResultType}
+* @param {BinaryOptions} opts
+* @returns {BinaryResult}
 */
 module.exports.to_bin_with_options = function(xml, opts) {
     try {
@@ -243,7 +243,7 @@ function passArray8ToWasm0(arg, malloc) {
 }
 /**
 * @param {Uint8Array} data
-* @returns {ResultType}
+* @returns {XmlResult}
 */
 module.exports.to_xml = function(data) {
     try {
@@ -339,9 +339,18 @@ module.exports.__wbg_set_20cbc34131e76824 = function(arg0, arg1, arg2) {
     getObject(arg0)[takeObject(arg1)] = takeObject(arg2);
 };
 
+module.exports.__wbg_new_b525de17f44a8943 = function() {
+    const ret = new Array();
+    return addHeapObject(ret);
+};
+
 module.exports.__wbg_new_f9876326328f45ed = function() {
     const ret = new Object();
     return addHeapObject(ret);
+};
+
+module.exports.__wbg_set_17224bc548dd1d7b = function(arg0, arg1, arg2) {
+    getObject(arg0)[arg1 >>> 0] = takeObject(arg2);
 };
 
 module.exports.__wbg_instanceof_ArrayBuffer_a69f02ee4c4f5065 = function(arg0) {
