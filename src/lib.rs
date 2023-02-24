@@ -11,7 +11,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
 extern "C" {
-    #[wasm_bindgen(typescript_type = "{ xml: string, encoding: number }")]
+    #[wasm_bindgen(typescript_type = "{ data: string, encoding: number }")]
     pub type IResult;
 }
 

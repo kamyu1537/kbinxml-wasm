@@ -186,7 +186,7 @@ function passArray8ToWasm0(arg, malloc) {
 }
 /**
 * @param {Uint8Array} data
-* @returns {{ xml: string, encoding: number }}
+* @returns {{ data: string, encoding: number }}
 */
 module.exports.to_bin = function(data) {
     const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
@@ -198,7 +198,7 @@ module.exports.to_bin = function(data) {
 /**
 * @param {Uint8Array} data
 * @param {number} encoding_byte
-* @returns {{ xml: string, encoding: number }}
+* @returns {{ data: string, encoding: number }}
 */
 module.exports.to_bin_with_encoding = function(data, encoding_byte) {
     const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
@@ -209,7 +209,7 @@ module.exports.to_bin_with_encoding = function(data, encoding_byte) {
 
 /**
 * @param {Uint8Array} data
-* @returns {{ xml: string, encoding: number }}
+* @returns {{ data: string, encoding: number }}
 */
 module.exports.to_xml = function(data) {
     const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
