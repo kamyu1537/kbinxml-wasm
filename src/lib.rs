@@ -13,7 +13,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 // append type
 #[wasm_bindgen(typescript_custom_section)]
 const TS_APPEND_CONTENT: &'static str = r#"
-/** 0x00: UTF-8, 0x20: UTF-16LE, 0x40: UTF-16BE, 0x60: UTF-32LE, 0x80: UTF-32BE, 0xA0: Shift-JIS */
+/** 0x00: None, 0x20: ASCII, 0x40: ISO_8859_1, 0x60: EUC_JP, 0x80: SHIFT_JIS, 0xA0: UTF_8 */
 type EncodingType = 0x00 | 0x20 | 0x40 | 0x60 | 0x80 | 0xA0;
 
 export type XmlResult = {
