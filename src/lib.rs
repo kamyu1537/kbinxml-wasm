@@ -23,19 +23,14 @@ export type BinaryResult = {
     encoding: EncodingType,
 };
 
+/**
+ * @param compression
+ * @param encoding 0x00: UTF-8, 0x20: UTF-16LE, 0x40: UTF-16BE, 0x60: UTF-32LE, 0x80: UTF-32BE, 0xA0: Shift-JIS
+ */
 export type BinaryOptions = {
     compression?: boolean,
-    encoding?: EncodingType,
+    encoding?: 0x00 | 0x20 | 0x40 | 0x60 | 0x80 | 0xA0,
 };
-
-export enum EncodingType {
-    None = 0x00,
-    ASCII = 0x20,
-    ISO_8859_1 = 0x40,
-    EUC_JP = 0x60,
-    SHIFT_JIS = 0x80,
-    UTF_8 = 0xA0,
-}
 "#;
 
 #[wasm_bindgen]
