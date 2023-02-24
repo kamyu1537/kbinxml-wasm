@@ -1,32 +1,18 @@
 mod utils;
 
+use gloo_utils::format::JsValueSerdeExt;
 use kbinxml::{EncodingType, Options};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[derive(Debug)]
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct DecodeResult {
-    base64: String,
-    encoding: u8,
-}
-
-#[wasm_bindgen]
-impl DecodeResult {
-    pub fn new(base64: String, encoding: u8) -> DecodeResult {
-        DecodeResult { base64, encoding }
-    }
-
-    pub fn base64(&self) -> String {
-        self.base64.clone()
-    }
-
-    pub fn encoding(&self) -> u8 {
-        self.encoding
-    }
+    pub base64: String,
+    pub encoding: u8,
 }
 
 // XML -> Binary
@@ -41,8 +27,14 @@ pub fn encode(data: &[u8], encoding_byte: u8) -> String {
 
 // Binary -> XML
 #[wasm_bindgen]
-pub fn decode(data: &[u8]) -> DecodeResult {
+pub fn decode(data: &[u8]) -> JsValue {
     let (collection, encoding) = kbinxml::from_slice(data).unwrap();
-    let result = kbinxml::to_text_xml(&collection).unwrap();
-    DecodeResult::new(base64::encode(result), encoding.to_byte())
+    let xml = kbinxml::to_text_xml(&collection).unwrap();
+
+    let result = DecodeResult {
+        base64: base64::encode(xml),
+        encoding: encoding.to_byte(),
+    };
+
+    JsValue::from_serde(&result).unwrap()
 }
