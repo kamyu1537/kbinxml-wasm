@@ -66,6 +66,7 @@ pub fn to_xml(data: &[u8]) -> IResult {
     // xml_str split \n and trim all lines and join
     let xml = xml_str
         .split('\n')
+        .skip(1)
         .map(|line| line.trim())
         .collect::<Vec<&str>>()
         .join("");
