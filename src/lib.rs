@@ -11,7 +11,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[derive(Serialize, Deserialize)]
 pub struct DecodeResult {
-    pub base64: String,
+    pub xml: String,
     pub encoding: u8,
 }
 
@@ -32,7 +32,7 @@ pub fn decode(data: &[u8]) -> JsValue {
     let xml = kbinxml::to_text_xml(&collection).unwrap();
 
     let result = DecodeResult {
-        base64: base64::encode(xml),
+        xml: String::from_utf8(xml).unwrap(),
         encoding: encoding.to_byte(),
     };
 
