@@ -34,7 +34,7 @@ enum EncodingType {
 }
 
 type XmlResult = { data: string, encoding: EncodingType };
-type BinaryResult = { data: string, encoding: EncodingType };
+type BinaryResult = { data: Uint8Array, encoding: EncodingType };
 type BinaryOptions = { encoding?: EncodingType, compression?: boolean };
 
 to_bin(xml: string): BinaryResult;
