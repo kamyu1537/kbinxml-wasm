@@ -103,3 +103,10 @@ pub fn to_text_xml(collection: &kbinxml::NodeCollection) -> Result<String, KbinX
         Err(KbinXMLError::ToXml)
     }
 }
+
+pub fn remove_indent(str: &str) -> String {
+    str.split('\n')
+        .map(|line| line.trim())
+        .collect::<Vec<&str>>()
+        .join("")
+}

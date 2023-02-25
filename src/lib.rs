@@ -6,7 +6,7 @@ use kbinxml::{EncodingType, Options};
 use types::{BinaryOptionsType, BinaryResult, BinaryResultType, XmlResult, XmlResultType};
 use utils::{
     build_to_binary_options, from_text_xml, get_binary_from_slice, get_to_binary_options,
-    to_binary_result, to_binary_with_options, to_text_xml, to_xml_result,
+    remove_indent, to_binary_result, to_binary_with_options, to_text_xml, to_xml_result,
 };
 
 use wasm_bindgen::{prelude::*, JsCast};
@@ -78,16 +78,13 @@ pub fn to_bin_with_options(
 
 // Binary -> XML
 #[wasm_bindgen]
-pub fn to_xml(data: &[u8]) -> Result<XmlResultType, JsError> {
+pub fn to_xml(data: &[u8], pretty: Option<bool>) -> Result<XmlResultType, JsError> {
     let (collection, encoding) = get_binary_from_slice(data)?;
-    let xml_str = to_text_xml(&collection)?;
+    let mut str = to_text_xml(&collection)?;
 
-    //  값 변환
-    let str = xml_str
-        .split('\n')
-        .map(|line| line.trim())
-        .collect::<Vec<&str>>()
-        .join("");
+    if pretty.is_none() || !pretty.unwrap() {
+        str = remove_indent(&str);
+    }
 
     let result = XmlResult {
         data: str,

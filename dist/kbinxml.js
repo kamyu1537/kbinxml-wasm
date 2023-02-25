@@ -243,14 +243,15 @@ function passArray8ToWasm0(arg, malloc) {
 }
 /**
 * @param {Uint8Array} data
+* @param {boolean | undefined} pretty
 * @returns {XmlResult}
 */
-module.exports.to_xml = function(data) {
+module.exports.to_xml = function(data, pretty) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.to_xml(retptr, ptr0, len0);
+        wasm.to_xml(retptr, ptr0, len0, isLikeNone(pretty) ? 0xFFFFFF : pretty ? 1 : 0);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         var r2 = getInt32Memory0()[retptr / 4 + 2];
