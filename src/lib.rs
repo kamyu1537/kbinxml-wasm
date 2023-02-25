@@ -65,10 +65,11 @@ pub struct BinaryOptions {
 #[derive(Debug, Clone)]
 enum KbinXMLError {
     InvalidXML,
-    ToBinary,
-    ToXml,
-    ResultConversion,
     InvalidOption,
+    InvalidEncodingType,
+    ToXml,
+    ToBinary,
+    ResultConversion,
     Utf8Error,
 }
 
@@ -77,10 +78,11 @@ impl fmt::Display for KbinXMLError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             KbinXMLError::InvalidXML => write!(f, "invalid xml"),
+            KbinXMLError::InvalidOption => write!(f, "invalid option"),
+            KbinXMLError::InvalidEncodingType => write!(f, "invalid encoding type"),
             KbinXMLError::ToBinary => write!(f, "to_binary error"),
             KbinXMLError::ToXml => write!(f, "to_xml error"),
             KbinXMLError::ResultConversion => write!(f, "result data conversion error"),
-            KbinXMLError::InvalidOption => write!(f, "invalid option"),
             KbinXMLError::Utf8Error => write!(f, "from_utf8 error"),
         }
     }
@@ -143,7 +145,11 @@ fn build_to_binary_options(opts: BinaryOptions) -> Result<Options, KbinXMLError>
     }
 
     if let Some(encoding) = opts.encoding {
-        options.encoding(EncodingType::from_byte(encoding).unwrap());
+        if let Ok(encoding_type) = EncodingType::from_byte(encoding) {
+            options.encoding(encoding_type);
+        } else {
+            return Err(KbinXMLError::InvalidEncodingType);
+        }
     }
 
     Ok(options.build())
