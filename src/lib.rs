@@ -4,8 +4,9 @@ mod utils;
 use kbinxml::{EncodingType, Options};
 use types::{BinaryOptionsType, BinaryResult, BinaryResultType, XmlResult, XmlResultType};
 use utils::{
-    build_to_binary_options, from_text_xml, get_binary_from_slice, get_to_binary_options,
-    remove_indent, to_binary_result, to_binary_with_options, to_text_xml, to_xml_result,
+    build_to_binary_options, from_slice_xml, from_text_xml, get_binary_from_slice,
+    get_to_binary_options, remove_indent, to_binary_result, to_binary_with_options, to_text_xml,
+    to_xml_result,
 };
 
 use wasm_bindgen::{prelude::*, JsCast};
@@ -54,6 +55,22 @@ pub fn to_bin(xml: String) -> Result<BinaryResultType, JsError> {
 
 // XML -> Binary
 #[wasm_bindgen]
+pub fn slice_to_bin(xml: &[u8]) -> Result<BinaryResultType, JsError> {
+    let (collection, encoding) = from_slice_xml(xml)?;
+    let options = Options::with_encoding(encoding);
+    let binary = to_binary_with_options(options, &collection)?;
+
+    let result = BinaryResult {
+        data: binary.into_boxed_slice(),
+        encoding: encoding.to_byte(),
+    };
+
+    let result = to_binary_result(&result)?;
+    Ok(result.unchecked_into::<BinaryResultType>())
+}
+
+// XML -> Binary
+#[wasm_bindgen]
 pub fn to_bin_with_options(
     xml: String,
     opts: BinaryOptionsType,
@@ -61,6 +78,29 @@ pub fn to_bin_with_options(
     let opts = get_to_binary_options(opts)?;
     let options = build_to_binary_options(opts.clone())?;
     let (collection, _encoding) = from_text_xml(xml)?;
+    let binary = to_binary_with_options(options, &collection)?;
+
+    let result = BinaryResult {
+        data: binary.into_boxed_slice(),
+        encoding: match opts.encoding {
+            Some(encoding) => encoding,
+            None => EncodingType::None.to_byte(),
+        },
+    };
+
+    let result = to_binary_result(&result)?;
+    Ok(result.unchecked_into::<BinaryResultType>())
+}
+
+// XML -> Binary
+#[wasm_bindgen]
+pub fn slice_to_bin_with_options(
+    xml: &[u8],
+    opts: BinaryOptionsType,
+) -> Result<BinaryResultType, JsError> {
+    let opts = get_to_binary_options(opts)?;
+    let options = build_to_binary_options(opts.clone())?;
+    let (collection, _encoding) = from_slice_xml(xml)?;
     let binary = to_binary_with_options(options, &collection)?;
 
     let result = BinaryResult {

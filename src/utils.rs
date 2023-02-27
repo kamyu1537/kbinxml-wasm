@@ -22,6 +22,13 @@ pub fn from_text_xml(xml: String) -> Result<(kbinxml::NodeCollection, EncodingTy
     }
 }
 
+pub fn from_slice_xml(xml: &[u8]) -> Result<(kbinxml::NodeCollection, EncodingType), JsError> {
+    match kbinxml::from_text_xml(xml) {
+        Ok((collection, encoding)) => Ok((collection, encoding)),
+        Err(err) => Err(JsError::new(err.to_string().as_str())),
+    }
+}
+
 pub fn to_binary_with_options(
     options: Options,
     collection: &kbinxml::NodeCollection,

@@ -6,11 +6,22 @@
 */
 export function to_bin(xml: string): BinaryResult;
 /**
+* @param {Uint8Array} xml
+* @returns {BinaryResult}
+*/
+export function slice_to_bin(xml: Uint8Array): BinaryResult;
+/**
 * @param {string} xml
 * @param {BinaryOptions} opts
 * @returns {BinaryResult}
 */
 export function to_bin_with_options(xml: string, opts: BinaryOptions): BinaryResult;
+/**
+* @param {Uint8Array} xml
+* @param {BinaryOptions} opts
+* @returns {BinaryResult}
+*/
+export function slice_to_bin_with_options(xml: Uint8Array, opts: BinaryOptions): BinaryResult;
 /**
 * @param {Uint8Array} data
 * @param {boolean | undefined} pretty
