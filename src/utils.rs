@@ -18,14 +18,14 @@ pub fn from_text_xml(xml: String) -> Result<(kbinxml::NodeCollection, EncodingTy
     let data = xml.as_bytes();
     match kbinxml::from_text_xml(data) {
         Ok((collection, encoding)) => Ok((collection, encoding)),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
 pub fn from_slice_xml(xml: &[u8]) -> Result<(kbinxml::NodeCollection, EncodingType), JsError> {
     match kbinxml::from_text_xml(xml) {
         Ok((collection, encoding)) => Ok((collection, encoding)),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
@@ -35,28 +35,28 @@ pub fn to_binary_with_options(
 ) -> Result<Vec<u8>, JsError> {
     match kbinxml::to_binary_with_options(options, collection) {
         Ok(binary) => Ok(binary),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
 pub fn to_xml_result(data: &XmlResult) -> Result<JsValue, JsError> {
     match serde_wasm_bindgen::to_value(data) {
         Ok(result) => Ok(result),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
 pub fn to_binary_result(data: &BinaryResult) -> Result<JsValue, JsError> {
     match serde_wasm_bindgen::to_value(data) {
         Ok(result) => Ok(result),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
 pub fn get_to_binary_options(opts: BinaryOptionsType) -> Result<BinaryOptions, JsError> {
     match serde_wasm_bindgen::from_value(JsValue::from(opts)) {
         Ok(options) => Ok(options),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
@@ -75,7 +75,7 @@ pub fn build_to_binary_options(opts: BinaryOptions) -> Result<Options, JsError> 
     if let Some(encoding) = opts.encoding {
         match EncodingType::from_byte(encoding) {
             Ok(encoding) => options.encoding(encoding),
-            Err(err) => return Err(JsError::new(err.to_string().as_str())),
+            Err(err) => return Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
         };
     };
 
@@ -87,7 +87,7 @@ pub fn get_binary_from_slice(
 ) -> Result<(kbinxml::NodeCollection, EncodingType), JsError> {
     match kbinxml::from_slice(data) {
         Ok((collection, encoding)) => Ok((collection, encoding)),
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
@@ -95,9 +95,9 @@ pub fn to_text_xml(collection: &kbinxml::NodeCollection) -> Result<String, JsErr
     match kbinxml::to_text_xml(collection) {
         Ok(buf) => match String::from_utf8(buf) {
             Ok(str) => Ok(str),
-            Err(err) => Err(JsError::new(err.to_string().as_str())),
+            Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
         },
-        Err(err) => Err(JsError::new(err.to_string().as_str())),
+        Err(err) => Err(JsError::new(format!("KbinXMLError: {}", err).as_str())),
     }
 }
 
