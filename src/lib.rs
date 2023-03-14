@@ -40,6 +40,8 @@ export type BinaryOptions = {
 // XML -> Binary
 #[wasm_bindgen]
 pub fn to_bin(xml: String) -> Result<BinaryResultType, JsError> {
+    utils::set_panic_hook();
+
     let (collection, encoding) = from_text_xml(xml)?;
     let options = Options::with_encoding(encoding);
     let binary = to_binary_with_options(options, &collection)?;
@@ -56,6 +58,8 @@ pub fn to_bin(xml: String) -> Result<BinaryResultType, JsError> {
 // XML -> Binary
 #[wasm_bindgen]
 pub fn slice_to_bin(xml: &[u8]) -> Result<BinaryResultType, JsError> {
+    utils::set_panic_hook();
+
     let (collection, encoding) = from_slice_xml(xml)?;
     let options = Options::with_encoding(encoding);
     let binary = to_binary_with_options(options, &collection)?;
@@ -75,6 +79,8 @@ pub fn to_bin_with_options(
     xml: String,
     opts: BinaryOptionsType,
 ) -> Result<BinaryResultType, JsError> {
+    utils::set_panic_hook();
+
     let opts = get_to_binary_options(opts)?;
     let options = build_to_binary_options(opts.clone())?;
     let (collection, _encoding) = from_text_xml(xml)?;
@@ -98,6 +104,8 @@ pub fn slice_to_bin_with_options(
     xml: &[u8],
     opts: BinaryOptionsType,
 ) -> Result<BinaryResultType, JsError> {
+    utils::set_panic_hook();
+
     let opts = get_to_binary_options(opts)?;
     let options = build_to_binary_options(opts.clone())?;
     let (collection, _encoding) = from_slice_xml(xml)?;
@@ -118,6 +126,8 @@ pub fn slice_to_bin_with_options(
 // Binary -> XML
 #[wasm_bindgen]
 pub fn to_xml(data: &[u8], pretty: Option<bool>) -> Result<XmlResultType, JsError> {
+    utils::set_panic_hook();
+
     let (collection, encoding) = get_binary_from_slice(data)?;
     let mut str = to_text_xml(&collection)?;
 
@@ -132,4 +142,10 @@ pub fn to_xml(data: &[u8], pretty: Option<bool>) -> Result<XmlResultType, JsErro
 
     let result = to_xml_result(&result)?;
     Ok(result.unchecked_into::<XmlResultType>())
+}
+
+#[wasm_bindgen]
+pub fn debug_mode() {
+    utils::set_panic_hook();
+    utils::set_log_level();
 }

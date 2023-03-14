@@ -28,6 +28,9 @@ export function slice_to_bin_with_options(xml: Uint8Array, opts: BinaryOptions):
 * @returns {XmlResult}
 */
 export function to_xml(data: Uint8Array, pretty?: boolean): XmlResult;
+/**
+*/
+export function debug_mode(): void;
 
 /** 0x00: None, 0x20: ASCII, 0x40: ISO_8859_1, 0x60: EUC_JP, 0x80: SHIFT_JIS, 0xA0: UTF_8 */
 type EncodingType = 0x00 | 0x20 | 0x40 | 0x60 | 0x80 | 0xA0;
